@@ -1,0 +1,28 @@
+﻿@model SportWebApplication.Models.Competention
+@{
+}
+<div class="form-group">
+    <a asp-action="SportsmanList">Список участников</a>
+</div>
+<div class="form-group">
+    <a asp-action="AgeGroupList">Список возрастных групп</a>
+</div>
+<form asp-action="formcompetetion" asp-controller="home">
+    <div class="form-group">
+        <label>Название соревнований</label>
+        <input asp-for="Name" id="LastName" type="text" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Интервал старта</label>
+        <input asp-for="Interval" type="number" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Сформировать" />
+    </div>
+</form>
+@{ 
+    if (Model.Start)
+    {
+        <label>Соревнование сформировано</label>
+    }
+}

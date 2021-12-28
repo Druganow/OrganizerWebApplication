@@ -1,0 +1,9 @@
+﻿@model IEnumerable<SportWebApplication.Models.User>
+<a asp-action="CreateSportsman">Добавить участника</a>
+<table class="table">
+        <tr><td>Имя</td><td>Возраст</td></tr>
+        @foreach (var item in Model)
+        {
+            <tr><td>@item.Name</td><td>@item.Age</td></tr>
+        }
+</table>

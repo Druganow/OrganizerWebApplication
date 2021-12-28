@@ -1,0 +1,9 @@
+﻿@model IEnumerable<SportWebApplication.Models.AgeGroup>
+<a asp-action="CreateAgeGroup">Добавить возрастную группу</a>
+<table class="table">
+    <tr><td>От</td><td>До</td><td>Пол</td><td>Количество отсечек</td></tr>
+    @foreach (var item in Model)
+    {
+        <tr><td>@item.Yahr1</td><td>@item.Yahr2</td><td>@item.Sex</td></tr>
+    }
+</table>
