@@ -37,10 +37,7 @@ namespace SportWebApplication.Controllers
         {
             return View();
         }
-        public IActionResult FormCreateAgeGroup()
-        {
-            return View();
-        }
+
         [HttpPost]
         public async Task<IActionResult> CreateSportsman(User user)
         {
@@ -48,23 +45,39 @@ namespace SportWebApplication.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("SportsmanList");
         }
-        public async Task<IActionResult> AgeGroupList()
+        public IActionResult AgeGroupList()
         {
-            return View(await db.AgeGroups.ToListAsync());
+            FormAgeGroup ageGroup = new FormAgeGroup();
+            ageGroup.AG = db.AgeGroups.ToList<AgeGroup>();
+            if (ageGroup.AG.Count != 0)
+                ageGroup.Yahr1 = ageGroup.AG[ageGroup.AG.Count - 1].Yahr2 + 1;
+            else
+                ageGroup.Yahr1 = 0;
+            return View(ageGroup);
         }
-        public IActionResult CreateAgeGroup()
-        {
-            return View();
-        }
+
         [HttpPost]
-        public async Task<IActionResult> CreateAgeGroup(AgeGroup AG)
+        public async Task<IActionResult> AgeGroupCreate(FormAgeGroup AgeG)
         {
-            db.AgeGroups.Add(AG);
+            AgeGroup ageGroupM = new AgeGroup();
+            ageGroupM.Yahr1 = AgeG.Yahr1;
+            ageGroupM.Yahr2 = AgeG.Yahr2;
+            ageGroupM.Sex = 1;
+            ageGroupM.Laps = AgeG.LapsM;
+            db.AgeGroups.Add(ageGroupM);
+
+            AgeGroup ageGroupF = new AgeGroup();
+            ageGroupF.Yahr1 = AgeG.Yahr1;
+            ageGroupF.Yahr2 = AgeG.Yahr2;
+            ageGroupF.Sex = 0;
+            ageGroupF.Laps = AgeG.LapsF;
+            db.AgeGroups.Add(ageGroupF);
             await db.SaveChangesAsync();
             return RedirectToAction("AgeGroupList");
         }
         public IActionResult Index()
         {
+            //db.Database.EnsureDeleted();
             return View();
         }
 

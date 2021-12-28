@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace SportWebApplication.Models
 {
-    public class AgeGroup
+    public class FormAgeGroup
     {
-        public int Id { get; set; }
-        public int Yahr1 { get; set; }
+        public int Yahr1 { get; set; } 
         public int Yahr2 { get; set; } 
-        public int Sex { get; set; }
-        public int Laps { get; set; }
+        public int LapsM { get; set; }
+        public int LapsF { get; set; }
+        public List<AgeGroup> AG{ get; set; }
     }
 }
