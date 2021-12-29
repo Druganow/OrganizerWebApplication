@@ -1,0 +1,57 @@
+﻿@model ProtokolForm
+<h1>Первенство водокачки</h1>
+@foreach (var item in Model.ageGroups)
+{
+    var i = 0;
+
+    @if (item.Sex == 0)
+    {
+
+        <h3>
+            Возрастная группа @item.Yahr1 - @item.Yahr2 девушки
+        </h3>
+    }
+    else
+    {
+        <h3>
+            Возрастная группа @item.Yahr1 - @item.Yahr2 юноши
+        </h3>
+    }
+
+
+    <table border="1">
+        <tr class="table">
+            <td class="trNumber">
+                Номер
+            </td>
+            <td>
+                Имя
+            </td>
+            <td class="trTime">
+                Время
+            </td>
+        </tr>
+        @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.StartTime))
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @us.Name
+                </td>
+                <td>
+                   + @Times(@us.StartTime)
+                </td>
+            </tr>
+            i++;
+        }
+    </table>
+}
+<h3></h3>
+@functions{
+    public static String Times(int sec)
+    {
+        return (sec / 60) + ":" + (sec % 60) + ((sec % 60) % 60 == 0 ? "0" : "");
+    }
+}

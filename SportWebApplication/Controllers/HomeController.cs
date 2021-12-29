@@ -15,9 +15,11 @@ namespace SportWebApplication.Controllers
     public class HomeController : Controller
     {
         private ApplicationContext db;
+        Random Rand;
         public HomeController(ApplicationContext context)
         {
             db = context;
+            Rand = new Random();
         }
         public async Task<IActionResult> Setting()
         {
@@ -39,6 +41,7 @@ namespace SportWebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSportsman(FormCreateUser UL)
         {
+            UL.user.RandNumber = Rand.Next(10000);
             db.Users.Add(UL.user);
             await db.SaveChangesAsync();
             return RedirectToAction("SportsmanList");
@@ -78,7 +81,13 @@ namespace SportWebApplication.Controllers
             //db.Database.EnsureDeleted();
             return View();
         }
-
+        public IActionResult ProtokolForm()
+        {
+            ProtokolForm pf = new ProtokolForm();
+            pf.ageGroups = db.AgeGroups.ToList();
+            pf.users = db.Users.ToList();
+            return View(pf);
+        }
 
         public IActionResult Privacy()
         {
@@ -90,6 +99,19 @@ namespace SportWebApplication.Controllers
             using (FileStream fs = new FileStream("competetion.json", FileMode.OpenOrCreate))
             {
                 await JsonSerializer.SerializeAsync<Competention>(fs, competention);
+            }
+            List<AgeGroup> ageGroups = db.AgeGroups.ToList();
+            foreach(var item in ageGroups)
+            {
+                int interval = 0;
+                //IEnumerable<User> users = db.Users.AsEnumerable()
+                foreach (var us in db.Users.Where(t => (t.Sex==item.Sex&&t.Age >= item.Yahr1 && t.Age <=item.Yahr2 )).OrderBy(t => t.RandNumber))
+                {
+                    us.StartTime = interval;
+                    interval += 15;
+                   
+                } 
+                db.SaveChanges();
             }
             return RedirectToAction("Setting");
         }

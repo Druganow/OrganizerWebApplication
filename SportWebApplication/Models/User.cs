@@ -11,5 +11,9 @@ namespace SportWebApplication.Models
         public string Name { get; set; } 
         public int Age { get; set; }
         public int Sex { get; set; }
+        public int StartTime { get; set; }
+        public int FinishTime { get; set; }
+        public int ResultTime { get; set; }
+        public int RandNumber { get; set; }
     }
 }
