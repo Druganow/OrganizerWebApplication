@@ -1,9 +1,49 @@
-﻿@model IEnumerable<SportWebApplication.Models.User>
-<a asp-action="CreateSportsman">Добавить участника</a>
+﻿@model SportWebApplication.Models.FormCreateUser
+<form asp-action="createsportsman" asp-controller="home">
+    <div class="form-group">
+        <table>
+            <tr>
+                <td>
+                    Имя
+                </td>
+                <td>
+                    Возраст
+                </td>
+                <td>
+                    Пол
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" asp-for="user.Name" class="form-control" />
+                </td>
+                <td>
+                    <input type="number" asp-for="user.Age" class="form-control" />
+                </td>
+                <td>
+                    <input type="number" asp-for="user.Sex" class="form-control" />
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Отправить" />
+        </div>
+</form>
 <table class="table">
-        <tr><td>Имя</td><td>Возраст</td></tr>
-        @foreach (var item in Model)
-        {
-            <tr><td>@item.Name</td><td>@item.Age</td></tr>
-        }
+    <tr><td>Имя</td><td>Возраст</td><td>Пол</td></tr>
+    @foreach (var item in Model.userList)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Age</td>
+            @if (item.Sex == 0)
+            {
+                <td>Ж</td>
+            }
+            else
+            {
+                <td>М</td>
+
+            }
+        </tr>
+    }
 </table>

@@ -29,19 +29,17 @@ namespace SportWebApplication.Controllers
             }
             
         }
-        public async Task<IActionResult> SportsmanList()
+        public IActionResult SportsmanList()
         {
-            return View(await db.Users.ToListAsync());
-        }
-        public IActionResult CreateSportsman()
-        {
-            return View();
+            FormCreateUser createUser = new FormCreateUser();
+            createUser.userList = db.Users.ToList();
+            return View(createUser);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSportsman(User user)
+        public async Task<IActionResult> CreateSportsman(FormCreateUser UL)
         {
-            db.Users.Add(user);
+            db.Users.Add(UL.user);
             await db.SaveChangesAsync();
             return RedirectToAction("SportsmanList");
         }
