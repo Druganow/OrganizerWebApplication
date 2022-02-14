@@ -23,10 +23,10 @@ namespace SportWebApplication.Controllers
         }
         public async Task<IActionResult> Setting()
         {
-            using (FileStream fs = new FileStream("competetion.json", FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream("competetion.json", FileMode.Open))
             {
                 Competention competention;
-                competention = await JsonSerializer.DeserializeAsync<Competention>(fs).ConfigureAwait(false);
+                competention = await JsonSerializer.DeserializeAsync<Competention>(fs);
                 return View(competention);
             }
             
@@ -95,23 +95,34 @@ namespace SportWebApplication.Controllers
         }
         public async Task<IActionResult> FormCompetetion(Competention competention)
         {
-            competention.Start = true;
-            using (FileStream fs = new FileStream("competetion.json", FileMode.OpenOrCreate))
+            if (competention.Start)
             {
-                await JsonSerializer.SerializeAsync<Competention>(fs, competention);
-            }
-            List<AgeGroup> ageGroups = db.AgeGroups.ToList();
-            foreach(var item in ageGroups)
-            {
-                int interval = 0;
-                //IEnumerable<User> users = db.Users.AsEnumerable()
-                foreach (var us in db.Users.Where(t => (t.Sex==item.Sex&&t.Age >= item.Yahr1 && t.Age <=item.Yahr2 )).OrderBy(t => t.RandNumber))
+                competention.Start = false;
+                using (FileStream fs = new FileStream("competetion.json", FileMode.Create))
                 {
-                    us.StartTime = interval;
-                    interval += 15;
-                   
-                } 
-                db.SaveChanges();
+                    await JsonSerializer.SerializeAsync<Competention>(fs, competention);
+                }
+            }
+            else
+            {
+                competention.Start = true;
+                using (FileStream fs = new FileStream("competetion.json", FileMode.Create))
+                {
+                    await JsonSerializer.SerializeAsync<Competention>(fs, competention);
+                }
+                List<AgeGroup> ageGroups = db.AgeGroups.ToList();
+                foreach (var item in ageGroups)
+                {
+                    int interval = 0;
+                    //IEnumerable<User> users = db.Users.AsEnumerable()
+                    foreach (var us in db.Users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.RandNumber))
+                    {
+                        us.StartTime = interval;
+                        interval += 15;
+
+                    }
+                    db.SaveChanges();
+                }
             }
             return RedirectToAction("Setting");
         }
