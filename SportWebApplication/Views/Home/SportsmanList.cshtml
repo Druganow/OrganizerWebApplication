@@ -15,13 +15,13 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" asp-for="user.Name" class="form-control" />
+                    <input type="text" asp-for="sportsman.Name" class="form-control" />
                 </td>
                 <td>
-                    <input type="number" asp-for="user.Age" class="form-control" />
+                    <input type="number" asp-for="sportsman.Age" class="form-control" />
                 </td>
                 <td>
-                    <input type="number" asp-for="user.Sex" class="form-control" />
+                    <input type="number" asp-for="sportsman.Sex" class="form-control" />
                 </td>
             </tr>
         </table>
@@ -42,8 +42,10 @@
             else
             {
                 <td>М</td>
-
             }
+        <td>
+            <a href="~/Home/DeleteSportsman?id=@item.Id">Удалить</a>
+        </td>
         </tr>
     }
 </table>

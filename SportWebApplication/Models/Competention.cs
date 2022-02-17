@@ -8,7 +8,7 @@ namespace SportWebApplication.Models
     public class Competention
     {
         public string Name { get; set; }
-        public int Interval { get; set; }
+        public TimeSpan Interval { get; set; }
         public bool Start { get; set; }
     }
 }

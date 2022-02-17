@@ -1,0 +1,57 @@
+﻿@model ProtokolForm
+<a class="print-doc" href="javascript:(print());"> Распечатать</a>
+
+<h1>Первенство водокачки</h1>
+@foreach (var item in Model.ageGroups)
+{
+    var i = 1;
+    <h4>@NameGroup(item)</h4>
+    <table>
+        <tr class="table table-hover">
+            <th>
+                Номер
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Время
+            </th>
+        </tr>
+        @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.ResultTime))
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @us.Name
+                </td>
+                <td>
+                    @us.FinishTime
+                </td>
+            </tr>
+            i++;
+        }
+    </table>
+}
+
+@functions{
+    public static string NameGroup(AgeGroup AG)
+    {
+        string NG = "Возрастная группа " + AG.Yahr1 + " - " + AG.Yahr2 + " ";
+        if (AG.Sex == 0)
+        {
+            if (AG.Yahr2 < 14) NG += "девочки";
+            else if (AG.Yahr2 < 22) NG += "девушки";
+            else NG += "женщины";
+        }
+        else
+        {
+            if (AG.Yahr2 < 14) NG += "мальчики";
+            else if (AG.Yahr2 < 22) NG += "юноши";
+            else NG += "мужчины";
+        }
+        return NG;
+    }
+}

@@ -23,29 +23,36 @@ namespace SportWebApplication.Controllers
         }
         public async Task<IActionResult> Setting()
         {
+            Competention competention;
             using (FileStream fs = new FileStream("competetion.json", FileMode.Open))
             {
-                Competention competention;
                 competention = await JsonSerializer.DeserializeAsync<Competention>(fs);
-                return View(competention);
             }
-            
+            return View(competention);
         }
         public IActionResult SportsmanList()
         {
             FormCreateUser createUser = new FormCreateUser();
-            createUser.userList = db.Users.ToList();
+            createUser.userList = db.Sportsmans.ToList();
             return View(createUser);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateSportsman(FormCreateUser UL)
         {
-            UL.user.RandNumber = Rand.Next(10000);
-            db.Users.Add(UL.user);
+            UL.sportsman.RandNumber = Rand.Next(10000);
+            db.Sportsmans.Add(UL.sportsman);
             await db.SaveChangesAsync();
             return RedirectToAction("SportsmanList");
         }
+
+        public async Task<IActionResult> DeleteSportsman(int ID)
+        {
+            db.Sportsmans.Remove(db.Sportsmans.Where(t=> t.Id==ID).FirstOrDefault());
+            await db.SaveChangesAsync();
+            return RedirectToAction("SportsmanList");
+        }
+
         public IActionResult AgeGroupList()
         {
             FormAgeGroup ageGroup = new FormAgeGroup();
@@ -85,7 +92,7 @@ namespace SportWebApplication.Controllers
         {
             ProtokolForm pf = new ProtokolForm();
             pf.ageGroups = db.AgeGroups.ToList();
-            pf.users = db.Users.ToList();
+            pf.users = db.Sportsmans.ToList();
             return View(pf);
         }
 
@@ -95,36 +102,70 @@ namespace SportWebApplication.Controllers
         }
         public async Task<IActionResult> FormCompetetion(Competention competention)
         {
-            if (competention.Start)
+            Competention c;
+            using (FileStream fs = new("competetion.json", FileMode.Open))
+            {
+                c = await JsonSerializer.DeserializeAsync<Competention>(fs);
+            }
+            if (c.Start)
             {
                 competention.Start = false;
-                using (FileStream fs = new FileStream("competetion.json", FileMode.Create))
-                {
-                    await JsonSerializer.SerializeAsync<Competention>(fs, competention);
-                }
+                
             }
             else
             {
                 competention.Start = true;
-                using (FileStream fs = new FileStream("competetion.json", FileMode.Create))
-                {
-                    await JsonSerializer.SerializeAsync<Competention>(fs, competention);
-                }
                 List<AgeGroup> ageGroups = db.AgeGroups.ToList();
                 foreach (var item in ageGroups)
                 {
-                    int interval = 0;
-                    //IEnumerable<User> users = db.Users.AsEnumerable()
-                    foreach (var us in db.Users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.RandNumber))
+                    TimeSpan interval = new TimeSpan(0, 0, 0);
+                    foreach (var us in db.Sportsmans.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.RandNumber))
                     {
                         us.StartTime = interval;
-                        interval += 15;
-
+                        interval += competention.Interval;
                     }
                     db.SaveChanges();
                 }
             }
+            using (FileStream fs = new("competetion.json", FileMode.Create))
+            {
+                await JsonSerializer.SerializeAsync<Competention>(fs, competention);
+            }
             return RedirectToAction("Setting");
+        }
+
+        public IActionResult InputResults()
+        {
+            ProtokolForm pf = new();
+            pf.ageGroups = db.AgeGroups.ToList();
+            pf.users = db.Sportsmans.ToList();
+            return View(pf);
+        }
+
+        [HttpPost]
+        public void FixInput(List<TimeSpan> times)
+        {
+            int i = 0;
+            List<AgeGroup> ageGroups = db.AgeGroups.ToList();
+            foreach (var item in ageGroups)
+            {
+                foreach (var us in db.Sportsmans.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.RandNumber))
+                {
+                    us.ResultTime = times[i];
+                    us.FinishTime = us.ResultTime - us.StartTime;
+                    i++;
+                }
+                db.SaveChanges();
+            }
+            RedirectToAction("ResultCompetetion");
+        }
+
+        public IActionResult ResultCompetetion()
+        {
+            ProtokolForm pf = new ProtokolForm();
+            pf.ageGroups = db.AgeGroups.ToList();
+            pf.users = db.Sportsmans.ToList();
+            return View(pf);
         }
     }
 }

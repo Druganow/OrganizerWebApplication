@@ -1,7 +1,5 @@
 ﻿@model ProtokolForm
-    <a class="print-doc" href="javascript:(print());"> Распечатать</a>
-
-    <h1>Первенство водокачки</h1>
+<form action="/Home/FixInput" method="post">
     @foreach (var item in Model.ageGroups)
     {
         var i = 1;
@@ -28,32 +26,37 @@
                         @us.Name
                     </td>
                     <td>
-                        @us.StartTime
+                        <input name="times" type="time" step="1" />
                     </td>
                 </tr>
                 i++;
             }
         </table>
     }
-
-    @functions{
-        
-
-        public static string NameGroup(AgeGroup AG)
-        {
-            string NG = "Возрастная группа " + AG.Yahr1 + " - " + AG.Yahr2 + " ";
-            if (AG.Sex == 0)
-            {
-                if (AG.Yahr2 < 14) NG += "девочки";
-                else if (AG.Yahr2 < 22) NG += "девушки";
-                else NG += "женщины";
-            }
-            else
-            {
-                if (AG.Yahr2 < 14) NG += "мальчики";
-                else if (AG.Yahr2 < 22) NG += "юноши";
-                else NG += "мужчины";
-            }
-            return NG;
-        }
+    <input type="submit" value="Зафиксировать"/>
+</form>
+@functions
+{
+    public static string Times(int sec)
+    {
+        return (sec / 60) + ":" + (sec % 60) + ((sec % 60) % 60 == 0 ? "0" : "");
     }
+
+    public static string NameGroup(AgeGroup AG)
+    {
+        string NG = "Возрастная группа " + AG.Yahr1 + " - " + AG.Yahr2 + " ";
+        if (AG.Sex == 0)
+        {
+            if (AG.Yahr2 < 14) NG += "девочки";
+            else if (AG.Yahr2 < 22) NG += "девушки";
+            else NG += "женщины";
+        }
+        else
+        {
+            if (AG.Yahr2 < 14) NG += "мальчики";
+            else if (AG.Yahr2 < 22) NG += "юноши";
+            else NG += "мужчины";
+        }
+        return NG;
+    }
+}

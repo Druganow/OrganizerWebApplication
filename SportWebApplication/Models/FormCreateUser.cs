@@ -7,7 +7,7 @@ namespace SportWebApplication.Models
 {
     public class FormCreateUser
     {
-        public User user { get; set; }
-        public List<User> userList { get; set; }
+        public Sportsman sportsman { get; set; }
+        public List<Sportsman> userList { get; set; }
     }
 }

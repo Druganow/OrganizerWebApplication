@@ -8,7 +8,7 @@ namespace SportWebApplication.Models
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<Sportsman> Sportsmans { get; set; }
         public DbSet<AgeGroup> AgeGroups { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)

@@ -4,17 +4,17 @@
 {
     var i = 0;
     <h3>Возрастная группа @item.Yahr1 - @item.Yahr2</h3>
-    <table>
+    <table class="table table-hover table-inverse">
         <tr>
-            <td>
+            <th>
                 Номер
-            </td>
-            <td>
+            </th>
+            <th>
                 Имя
-            </td>
-            <td>
+            </th>
+            <th>
                 Время
-            </td>
+            </th>
         </tr>
         @foreach (var us in Model.users.Where(t => (t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.StartTime))
         {
@@ -33,4 +33,4 @@
         }
     </table>
 }
-<h3></h3>
+
