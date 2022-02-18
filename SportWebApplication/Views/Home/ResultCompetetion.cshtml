@@ -1,7 +1,8 @@
 ﻿@model ProtokolForm
 <a class="print-doc" href="javascript:(print());"> Распечатать</a>
 
-<h1>Первенство водокачки</h1>
+<h1 class="text-center">@Model.CompetetionName</h1>
+<h2>Финишный протокол</h2>
 @foreach (var item in Model.ageGroups)
 {
     var i = 1;

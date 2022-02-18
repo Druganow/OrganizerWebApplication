@@ -9,5 +9,6 @@ namespace SportWebApplication.Models
     {
         public List<AgeGroup> ageGroups { get; set; }
         public List<Sportsman> users { get; set; }
+        public string CompetetionName { get; set; }
     }
 }

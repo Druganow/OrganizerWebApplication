@@ -88,11 +88,15 @@ namespace SportWebApplication.Controllers
             //db.Database.EnsureDeleted();
             return View();
         }
-        public IActionResult ProtokolForm()
+        public async Task<IActionResult> ProtokolForm()
         {
-            ProtokolForm pf = new ProtokolForm();
+            ProtokolForm pf = new();
             pf.ageGroups = db.AgeGroups.ToList();
             pf.users = db.Sportsmans.ToList();
+            using (FileStream fs = new("competetion.json", FileMode.Open))
+            {
+                pf.CompetetionName = (await JsonSerializer.DeserializeAsync<Competention>(fs)).Name;
+            }
             return View(pf);
         }
 
@@ -113,7 +117,7 @@ namespace SportWebApplication.Controllers
                 
             }
             else
-            {
+            { 
                 competention.Start = true;
                 List<AgeGroup> ageGroups = db.AgeGroups.ToList();
                 foreach (var item in ageGroups)
@@ -143,7 +147,7 @@ namespace SportWebApplication.Controllers
         }
 
         [HttpPost]
-        public void FixInput(List<TimeSpan> times)
+        public IActionResult FixInput(List<TimeSpan> times)
         {
             int i = 0;
             List<AgeGroup> ageGroups = db.AgeGroups.ToList();
@@ -157,15 +161,32 @@ namespace SportWebApplication.Controllers
                 }
                 db.SaveChanges();
             }
-            RedirectToAction("ResultCompetetion");
+            return RedirectToAction("ResultCompetetion");
         }
 
-        public IActionResult ResultCompetetion()
+        public async Task<IActionResult> ResultCompetetion()
         {
             ProtokolForm pf = new ProtokolForm();
             pf.ageGroups = db.AgeGroups.ToList();
             pf.users = db.Sportsmans.ToList();
+            using (FileStream fs = new("competetion.json", FileMode.Open))
+            {
+                pf.CompetetionName = (await JsonSerializer.DeserializeAsync<Competention>(fs)).Name;
+            }
             return View(pf);
+        }
+
+        public async Task<IActionResult> DeleteLastAgeGroup()
+        {
+            db.AgeGroups.Remove(db.AgeGroups.OrderBy(t => t.Id).Last());
+            await db.SaveChangesAsync();
+            db.AgeGroups.Remove(db.AgeGroups.OrderBy(t => t.Id).Last());
+            await db.SaveChangesAsync();
+            return RedirectToAction("AgeGroupList");
+        }
+        public IActionResult Protokol()
+        {
+            return View();
         }
     }
 }

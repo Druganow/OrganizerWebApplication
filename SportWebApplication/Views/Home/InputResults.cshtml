@@ -1,5 +1,6 @@
 ﻿@model ProtokolForm
 <form action="/Home/FixInput" method="post">
+    <h1 class="text-center">@Model.CompetetionName</h1>
     @foreach (var item in Model.ageGroups)
     {
         var i = 1;
@@ -26,7 +27,7 @@
                         @us.Name
                     </td>
                     <td>
-                        <input name="times" type="time" step="1" />
+                        <input name="times" type="time" step="1" value="@us.ResultTime" />
                     </td>
                 </tr>
                 i++;
@@ -37,10 +38,7 @@
 </form>
 @functions
 {
-    public static string Times(int sec)
-    {
-        return (sec / 60) + ":" + (sec % 60) + ((sec % 60) % 60 == 0 ? "0" : "");
-    }
+   
 
     public static string NameGroup(AgeGroup AG)
     {

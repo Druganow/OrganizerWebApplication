@@ -1,32 +1,39 @@
 ﻿@model FormAgeGroup
-@if(Model.Yahr1<101)
-{ 
-<form asp-action="AgeGroupCreate" asp-controller="home">
-    <div class="form-group">
-        <table class="table">
-            <tr><td>От</td><td>До</td><td>Количество отсечек Мужчины</td><td>Количество отсечек Женщины</td></tr>
-            <tr>
-                <td>
-                    <input readonly type="number" asp-for="Yahr1" class="form-control" />
-                </td>
-                <td>
-                    <input type="number" asp-for="Yahr2" min="@Model.Yahr1" max="100" class="form-control" />
-                </td>
-                <td>
-                    <input type="number" asp-for="LapsM" class="form-control" />
-                </td>
-                <td>
-                    <input type="number" asp-for="LapsF" class="form-control" />
-                </td>
-            </tr>
-        </table>
+@if (Model.Yahr1 < 101)
+{
+    <form asp-action="AgeGroupCreate" asp-controller="home">
         <div class="form-group">
-            <input type="submit" value="Отправить" />
+            <table class="table">
+                <tr><td>От</td><td>До</td><td>Количество отсечек Мужчины</td><td>Количество отсечек Женщины</td></tr>
+                <tr>
+                    <td>
+                        <input readonly type="number" asp-for="Yahr1" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="number" asp-for="Yahr2" min="@Model.Yahr1" max="100" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="number" asp-for="LapsM" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="number" asp-for="LapsF" class="form-control" />
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <input type="submit" value="Отправить" />
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 }
-<input asp-action="deleteLastAgeGroup" asp-controller="home" value="Удалить последнюю группу"/>
+@if (Model.Yahr1 > 0)
+{
+    <form asp-action="DeleteLastAgeGroup" asp-controller="home">
+        <input type="submit" value="Удалить последнюю группу" />
+    </form>
+    
+}
+
 <table class="table">
     <tr><td>От</td><td>До</td><td>Пол</td><td>Количество отсечек</td></tr>
     @foreach (var item in Model.AG)
