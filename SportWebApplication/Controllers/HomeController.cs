@@ -37,6 +37,22 @@ namespace SportWebApplication.Controllers
             return View(createUser);
         }
 
+
+        public async Task<IActionResult> DeleteSportsmans()
+        {
+            db.Sportsmans.RemoveRange(db.Sportsmans);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Setting");
+        }
+
+        public async Task<IActionResult> DeleteAgeGroup()
+        {
+            db.AgeGroups.RemoveRange(db.AgeGroups);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Setting");
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreateSportsman(FormCreateUser UL)
         {
@@ -52,6 +68,7 @@ namespace SportWebApplication.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("SportsmanList");
         }
+
 
         public IActionResult AgeGroupList()
         {
@@ -135,7 +152,7 @@ namespace SportWebApplication.Controllers
             {
                 await JsonSerializer.SerializeAsync<Competention>(fs, competention);
             }
-            return RedirectToAction("Setting");
+            return RedirectToAction("Setting", competention);
         }
 
         public IActionResult InputResults()

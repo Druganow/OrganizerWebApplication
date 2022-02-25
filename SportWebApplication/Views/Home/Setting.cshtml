@@ -8,11 +8,11 @@
 <form asp-action="formcompetetion" asp-controller="home">
     <div class="form-group">
         <label>Название соревнований</label>
-        <input asp-for="Name"  type="text" class="form-control" />
+        <input asp-for="Name" type="text" class="form-control" />
     </div>
     <div class="form-group">
         <label>Интервал старта</label>
-        <input asp-for="Interval" type="time" step="1" class="form-control"/>
+        <input asp-for="Interval" type="time" step="1" class="form-control" />
     </div>
 
     <div class="form-group">
@@ -24,6 +24,8 @@
         else
         {
             <input type="submit" value="Сформировать" />
+            <a asp-action="DeleteAgeGroup">Удалить возрастные группы</a>
+            <a asp-action="DeleteSportsmans">Удалить всех спортсменов</a>
         }
     </div>
 </form>
