@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportWebApplication", "SportWebApplication\SportWebApplication.csproj", "{53A755CA-CF73-42A6-929C-D2869623AC81}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E2FC766-05E2-4A5E-9467-1A1BF8FA2F4D}"
+	ProjectSection(SolutionItems) = preProject
+		Текущие задачи.txt = Текущие задачи.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
