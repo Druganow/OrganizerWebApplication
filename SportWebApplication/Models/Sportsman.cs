@@ -11,6 +11,7 @@ namespace SportWebApplication.Models
         public int Id { get; set; }
         public string Name { get; set; } 
         public int Age { get; set; }
+        public int Number { get; set; }
         public int Sex { get; set; }
         [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan StartTime { get; set; }

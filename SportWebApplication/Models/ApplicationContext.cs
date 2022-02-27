@@ -10,6 +10,7 @@ namespace SportWebApplication.Models
     {
         public DbSet<Sportsman> Sportsmans { get; set; }
         public DbSet<AgeGroup> AgeGroups { get; set; }
+        public DbSet<Number> Numbers { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {

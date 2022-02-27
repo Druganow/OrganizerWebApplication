@@ -1,4 +1,8 @@
 ﻿@model SportWebApplication.Models.FormCreateUser
+<form asp-action="AddFile" asp-controller="Home" method="post" enctype="multipart/form-data">
+    <input type="file" name="fileExcel" /><br>
+    <input type="submit" value="Загрузить" />
+</form>
 <form asp-action="createsportsman" asp-controller="home">
     <div class="form-group">
         <table>
@@ -21,14 +25,13 @@
                     <input type="number" asp-for="sportsman.Age" class="form-control" />
                 </td>
                 <td>
-                    @*<input type="radio" asp-for="sportsman.Sex" class="form-control" />*@
-                    <input asp-for="sportsman.Sex" type="radio" checked value="0" /><label for="0">Ж</label> 
+                    <input asp-for="sportsman.Sex" type="radio" checked value="0" /><label for="0">Ж</label>
                     <input asp-for="sportsman.Sex" type="radio" value="1" /><label for="1">М</label>
                 </td>
             </tr>
         </table>
         <input type="submit" value="Отправить" />
-        </div>
+    </div>
 </form>
 <table class="table">
     <tr><td>Имя</td><td>Возраст</td><td>Пол</td></tr>
@@ -45,9 +48,9 @@
             {
                 <td>М</td>
             }
-        <td>
-            <a href="~/Home/DeleteSportsman?id=@item.Id">Удалить</a>
-        </td>
+            <td>
+                <a href="~/Home/DeleteSportsman?id=@item.Id">Удалить</a>
+            </td>
         </tr>
     }
 </table>

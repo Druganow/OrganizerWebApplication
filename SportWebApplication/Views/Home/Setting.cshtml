@@ -5,6 +5,10 @@
 <div class="form-group">
     <a asp-action="AgeGroupList">Список возрастных групп</a>
 </div>
+<form asp-action="AddNumbers" asp-controller="Home" method="post" enctype="multipart/form-data">
+    <input type="file" name="fileExcel" /><br>
+    <input type="submit" value="Загрузить" />
+</form>
 <form asp-action="formcompetetion" asp-controller="home">
     <div class="form-group">
         <label>Название соревнований</label>

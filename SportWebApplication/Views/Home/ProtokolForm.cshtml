@@ -23,7 +23,7 @@
                 </th>
             </tr>
             @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
-          && t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime))
+          && t.Age <= item.Yahr2)).OrderBy(t => t.StartTime))
             {
                 <tr>
                     <td>
