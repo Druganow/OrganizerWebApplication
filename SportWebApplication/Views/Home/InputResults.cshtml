@@ -34,26 +34,26 @@
             }
         </table>
     }
-    <input type="submit" value="Зафиксировать"/>
+    <input type="submit" value="Зафиксировать" />
 </form>
-@functions
-{
-   
-
+@functions{
     public static string NameGroup(AgeGroup AG)
     {
-        string NG = "Возрастная группа " + AG.Yahr1 + " - " + AG.Yahr2 + " ";
+        string NG = "Возрастная группа ";
+        if (AG.Yahr1 == 0) NG += AG.Yahr2 + " и старше";
+        else if (AG.Yahr2 == DateTime.Today.Year) NG += AG.Yahr1 + " и младше";
+        else NG += AG.Yahr1 + " - " + AG.Yahr2;
         if (AG.Sex == 0)
         {
-            if (AG.Yahr2 < 14) NG += "девочки";
-            else if (AG.Yahr2 < 22) NG += "девушки";
-            else NG += "женщины";
+            if (DateTime.Today.Year - AG.Yahr2 <= 14) NG += " девочки";
+            else if (DateTime.Today.Year - AG.Yahr2 <= 22) NG += " девушки";
+            else NG += " женщины";
         }
         else
         {
-            if (AG.Yahr2 < 14) NG += "мальчики";
-            else if (AG.Yahr2 < 22) NG += "юноши";
-            else NG += "мужчины";
+            if (DateTime.Today.Year - AG.Yahr2 <= 14) NG += " мальчики";
+            else if (DateTime.Today.Year - AG.Yahr2 <= 22) NG += " юноши";
+            else NG += " мужчины";
         }
         return NG;
     }

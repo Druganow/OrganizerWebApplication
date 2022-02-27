@@ -1,5 +1,5 @@
 ﻿@model FormAgeGroup
-@if (Model.Yahr1 < 101)
+@if (Model.Yahr1 < @DateTime.Today.Year)
 {
     <form asp-action="AgeGroupCreate" asp-controller="home">
         <div class="form-group">
@@ -7,10 +7,10 @@
                 <tr><td>От</td><td>До</td><td>Количество отсечек Мужчины</td><td>Количество отсечек Женщины</td></tr>
                 <tr>
                     <td>
-                        <input readonly type="number" asp-for="Yahr1" class="form-control" />
+                        <input readonly type="number" asp-for="Yahr1" min="1900" max="@DateTime.Today.Year" class="form-control" />
                     </td>
                     <td>
-                        <input type="number" asp-for="Yahr2" min="@Model.Yahr1" max="100" class="form-control" />
+                        <input type="number" asp-for="Yahr2" min="@Model.Yahr1" max="@DateTime.Today.Year" class="form-control" />
                     </td>
                     <td>
                         <input type="number" asp-for="LapsM" class="form-control" />
