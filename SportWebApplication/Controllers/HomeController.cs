@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SportWebApplication.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -64,7 +63,7 @@ namespace SportWebApplication.Controllers
 
         public async Task<IActionResult> DeleteSportsman(int ID)
         {
-            db.Sportsmans.Remove(db.Sportsmans.Where(t=> t.Id==ID).FirstOrDefault());
+            db.Sportsmans.Remove(db.Sportsmans.Where(t => t.Id == ID).FirstOrDefault());
             await db.SaveChangesAsync();
             return RedirectToAction("SportsmanList");
         }
@@ -143,10 +142,10 @@ namespace SportWebApplication.Controllers
             if (c.Start)
             {
                 competention.Start = false;
-                
+
             }
             else
-            { 
+            {
                 competention.Start = true;
                 List<AgeGroup> ageGroups = db.AgeGroups.ToList();
                 foreach (var item in ageGroups)
@@ -217,5 +216,43 @@ namespace SportWebApplication.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFile(IFormFile fileExcel)
+        {
+            if (fileExcel != null)
+            {
+
+                using (XLWorkbook workBook = new XLWorkbook(fileExcel.OpenReadStream(), XLEventTracking.Disabled))
+                {
+                    foreach (IXLWorksheet worksheet in workBook.Worksheets)
+                    {
+                        foreach (IXLRow row in worksheet.RowsUsed().Skip(1))
+                        {
+                            try
+                            {
+                                Sportsman SM = new Sportsman();
+                                SM.Name = row.Cell(1).Value.ToString();
+                                SM.Age = int.Parse(row.Cell(2).Value.ToString());
+                                if (row.Cell(3).Value.ToString() == "м")
+                                    SM.Sex = 1;
+                                else SM.Sex = 0;
+                                SM.RandNumber = Rand.Next(10000);
+                                db.Sportsmans.Add(SM);
+                                await db.SaveChangesAsync();
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            return RedirectToAction("SportsmanList");
+        }
+
     }
 }
