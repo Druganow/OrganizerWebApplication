@@ -117,6 +117,18 @@ namespace SportWebApplication.Controllers
             return View(pf);
         }
 
+        public async Task<IActionResult> DiplomaForm()
+        {
+            ProtokolForm pf = new();
+            pf.ageGroups = db.AgeGroups.ToList();
+            pf.users = db.Sportsmans.ToList();
+            using (FileStream fs = new("competetion.json", FileMode.Open))
+            {
+                pf.CompetetionName = (await JsonSerializer.DeserializeAsync<Competention>(fs)).Name;
+            }
+            return View(pf);
+        }
+
         public IActionResult Privacy()
         {
             return View();

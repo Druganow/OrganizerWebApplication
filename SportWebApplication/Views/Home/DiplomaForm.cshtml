@@ -1,0 +1,55 @@
+﻿@model SportWebApplication.Models.ProtokolForm
+
+
+@foreach (var item in Model.ageGroups)
+{
+    var i = 1;
+    @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
+&& t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime))
+    {
+        if (i < 4)
+        {
+            <div style="height: 397mm; width: 210mm; margin-left: auto; margin-right: auto; ">
+                <h1 class="text-center">Грамота</h1>
+                <h2 class="text-center">@Model.CompetetionName</h2>
+                @if (item.Sex == 0)
+                {
+                    <h3 class="text-center">
+                        Награждается @us.Name, занявшая @i место в возрастной группе @NameGroup(item). Время: @us.FinishTime
+                    </h3>
+                }
+                else
+                {
+                    <h3 class="text-center">
+                        Награждается @us.Name, занявший @i место в возрастной группе @NameGroup(item).  Время: @us.FinishTime
+                    </h3>
+                }
+
+            </div>
+            i++;
+        }
+    }
+}
+
+@functions{
+    public static string NameGroup(AgeGroup AG)
+    {
+        string NG = "Возрастная группа ";
+        if (AG.Yahr1 == 0) NG += AG.Yahr2 + " и старше";
+        else if (AG.Yahr2 == DateTime.Today.Year) NG += AG.Yahr1 + " и младше";
+        else NG += AG.Yahr1 + " - " + AG.Yahr2;
+        if (AG.Sex == 0)
+        {
+            if (DateTime.Today.Year - AG.Yahr2 <= 14) NG += " девочки";
+            else if (DateTime.Today.Year - AG.Yahr2 <= 22) NG += " девушки";
+            else NG += " женщины";
+        }
+        else
+        {
+            if (DateTime.Today.Year - AG.Yahr2 <= 14) NG += " мальчики";
+            else if (DateTime.Today.Year - AG.Yahr2 <= 22) NG += " юноши";
+            else NG += " мужчины";
+        }
+        return NG;
+    }
+}

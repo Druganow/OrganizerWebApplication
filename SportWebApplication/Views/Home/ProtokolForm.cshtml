@@ -6,35 +6,40 @@
 @foreach (var item in Model.ageGroups)
 {
     var i = 1;
-    <h4>@NameGroup(item)</h4>
-    <table>
-        <tr class="table table-hover">
-            <th>
-                Номер
-            </th>
-            <th>
-                Имя
-            </th>
-            <th>
-                Время
-            </th>
-        </tr>
-        @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.StartTime))
-        {
-            <tr>
-                <td>
-                    @i
-                </td>
-                <td>
-                    @us.Name
-                </td>
-                <td>
-                    @us.StartTime
-                </td>
+    if ((Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
+     && t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime)).Count<Sportsman>() != 0)
+    {
+        <h4>@NameGroup(item)</h4>
+        <table>
+            <tr class="table table-hover">
+                <th>
+                    Номер
+                </th>
+                <th>
+                    Имя
+                </th>
+                <th>
+                    Время
+                </th>
             </tr>
-            i++;
-        }
-    </table>
+            @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
+          && t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime))
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+                    <td>
+                        @us.Name
+                    </td>
+                    <td>
+                        @us.StartTime
+                    </td>
+                </tr>
+                i++;
+            }
+        </table>
+    }
 }
 
 @functions{

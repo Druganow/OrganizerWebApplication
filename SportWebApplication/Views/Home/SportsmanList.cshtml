@@ -7,7 +7,7 @@
                     Имя
                 </td>
                 <td>
-                    Возраст
+                    Год рождения
                 </td>
                 <td>
                     Пол
@@ -21,7 +21,9 @@
                     <input type="number" asp-for="sportsman.Age" class="form-control" />
                 </td>
                 <td>
-                    <input type="number" asp-for="sportsman.Sex" class="form-control" />
+                    @*<input type="radio" asp-for="sportsman.Sex" class="form-control" />*@
+                    <input asp-for="sportsman.Sex" type="radio" checked value="0" /><label for="0">Ж</label> 
+                    <input asp-for="sportsman.Sex" type="radio" value="1" /><label for="1">М</label>
                 </td>
             </tr>
         </table>
