@@ -1,8 +1,9 @@
 ﻿@model ProtokolForm
-<a class="print-doc" href="javascript:(print());"> Распечатать</a>
+<a class="noprint btn btn-primary" href="javascript:(print());"> Распечатать</a>
 
 <h1 class="text-center">@Model.CompetetionName</h1>
 <h2>Финишный протокол</h2>
+@{TimeSpan DNF = new(23, 59, 59); }
 @foreach (var item in Model.ageGroups)
 {
     var i = 1;
@@ -23,11 +24,11 @@
                     Время
                 </th>
             </tr>
-            @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 
-             && t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime))
+            @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
+          && t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime))
             {
 
-                if (i == 1) FirstTime = us.FinishTime;
+                @if (i == 1) FirstTime = us.FinishTime;
 
                 <tr>
                     <td>
@@ -36,16 +37,31 @@
                     <td>
                         @us.Name
                     </td>
-                    <td>
-                        @if (i == 1)
+                    @if (i == 1)
+                    {
+                        @if (us.FinishTime == DNF)
                         {
-                            @us.FinishTime
+                            <td>DNF</td>
+}
+
+                        else
+                        {
+                            <td>@us.FinishTime</td>
+                        }
+                    }
+
+
+                    else
+                    {
+                        @if (us.FinishTime == DNF)
+                        {
+                            <td>DNF</td>
                         }
                         else
                         {
-                            @("+") @(us.FinishTime - FirstTime)
+                            <td>+@(us.FinishTime-FirstTime)</td>
                         }
-                    </td>
+                    }
                 </tr>
                 i++;
             }

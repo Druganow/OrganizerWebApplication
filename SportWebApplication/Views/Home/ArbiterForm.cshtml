@@ -1,11 +1,10 @@
 ﻿@model ProtokolForm
-<a class="print-doc" href="javascript:(print());"> Распечатать</a>
+    <a class="noprint btn btn-primary" href="javascript:(print());"> Распечатать</a>
 
 <h1 class="text-center">@Model.CompetetionName</h1>
 <h2>Судейский протокол</h2>
 @foreach (var item in Model.ageGroups)
 {
-    var i = 1;
     if ((Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
      && t.Age <= item.Yahr2)).OrderBy(t => t.FinishTime)).Count<Sportsman>() != 0)
     {
@@ -13,13 +12,7 @@
         <table>
             <tr class="table table-hover">
                 <th>
-                    №
-                </th>
-                <th>
                     Номер
-                </th>
-                <th>
-                    Имя
                 </th>
                 <th>
                     Отсечки
@@ -33,13 +26,7 @@
             {
         <tr>
             <td>
-                @i
-            </td>
-            <td>
                 @us.Number
-            </td>
-            <td>
-                @us.Name
             </td>
             <td>
 
@@ -49,10 +36,9 @@
                 }
             </td>
             <td>
-                @us.StartTime
+                <div>___:_____:_____</div>
             </td>
         </tr>
-                i++;
             }
         </table>
     }

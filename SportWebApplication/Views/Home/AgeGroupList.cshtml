@@ -21,7 +21,7 @@
                 </tr>
             </table>
             <div class="form-group">
-                <input type="submit" value="Отправить" />
+                <input type="submit" class="btn btn-primary" value="Отправить" />
             </div>
         </div>
     </form>
@@ -29,7 +29,7 @@
 @if (Model.Yahr1 > 0)
 {
     <form asp-action="DeleteLastAgeGroup" asp-controller="home">
-        <input type="submit" value="Удалить последнюю группу" />
+        <input type="submit" class="btn btn-primary" value="Удалить последнюю группу" />
     </form>
     
 }

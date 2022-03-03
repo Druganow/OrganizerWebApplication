@@ -1,13 +1,16 @@
 ﻿@model SportWebApplication.Models.Competention
-    <form asp-action="AddNumbers" asp-controller="Home" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" /><br>
-        <input type="submit" value="Загрузить" />
-    </form>
+
+<form class="form-group custom-file" asp-action="AddNumbers" asp-controller="Home" method="post" enctype="multipart/form-data" style="height: 80px;">
+    <input type="file" id="fileForm" accept=".txt" name="file" /><br>
+    <label class="custom-file-label" for="fileForm">Загрузка стека номеров</label>
+    <input class="btn btn-primary" type="submit" value="Загрузить" />
+</form>
+
     <div class="form-group">
-        <a asp-action="SportsmanList">Список участников</a>
+        <a class="btn btn-primary" asp-action="SportsmanList">Список участников</a>
     </div>
     <div class="form-group">
-        <a asp-action="AgeGroupList">Список возрастных групп</a>
+        <a class="btn btn-primary" asp-action="AgeGroupList">Список возрастных групп</a>
     </div>
     <form asp-action="formcompetetion" asp-controller="home">
         <div class="form-group">
@@ -18,17 +21,17 @@
             <label>Интервал старта</label>
             <input asp-for="Interval" type="time" step="1" class="form-control" />
         </div>
-        <div class="form-group">
+        <div>
             @if (Model.Start)
             {
-                <input type="submit" value="Сбросить" />
+                <input class="btn btn-primary" type="submit" value="Сбросить" />
                 <label>Соревнование сформировано</label>
             }
             else
             {
-                <input type="submit" value="Сформировать" />
-                <a asp-action="DeleteAgeGroup">Удалить возрастные группы</a>
-                <a asp-action="DeleteSportsmans">Удалить всех спортсменов</a>
+                <input class="btn btn-primary" type="submit" value="Сформировать" />
+                <a class="btn btn-primary" asp-action="DeleteAgeGroup">Удалить возрастные группы</a>
+                <a class="btn btn-primary" asp-action="DeleteSportsmans">Удалить всех спортсменов</a>
             }
         </div>
     </form>

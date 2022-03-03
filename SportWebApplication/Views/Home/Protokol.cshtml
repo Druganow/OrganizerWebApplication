@@ -1,12 +1,21 @@
-﻿<div>
-    <a asp-action="ProtokolForm">Стартовые протоколы </a>
-</div>
-<div>
-    <a asp-action="ArbiterForm">Судейские протоколы</a>
-</div>
-<div>
-    <a asp-action="ResultCompetetion">Финишные протоколы</a>
-</div>
-<div>
-    <a asp-action="DiplomaForm">Грамоты</a>
-</div>
+﻿@if (ViewBag.Start)
+{
+    <div class="form-group">
+        <a class=" btn btn-primary" asp-action="ProtokolForm">Стартовые протоколы </a>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-primary" asp-action="ArbiterForm">Судейские протоколы</a>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-primary" asp-action="ResultCompetetion">Финишные протоколы</a>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-primary" asp-action="DiplomaForm">Грамоты</a>
+    </div>
+}
+else
+{
+    <h2>
+        Соревнование ещё не сформированно
+    </h2>
+}

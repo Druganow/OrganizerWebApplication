@@ -182,11 +182,17 @@ namespace SportWebApplication.Controllers
             return RedirectToAction("Setting", competention);
         }
 
-        public IActionResult InputResults()
+        public async Task<IActionResult> InputResults()
         {
             ProtokolForm pf = new();
             pf.ageGroups = db.AgeGroups.ToList();
             pf.users = db.Sportsmans.ToList();
+            Competention competention;
+            using (FileStream fs = new FileStream("competetion.json", FileMode.Open))
+            {
+                competention = await JsonSerializer.DeserializeAsync<Competention>(fs);
+            }
+            ViewBag.Start = competention.Start;
             return View(pf);
         }
 
@@ -195,12 +201,15 @@ namespace SportWebApplication.Controllers
         {
             int i = 0;
             List<AgeGroup> ageGroups = db.AgeGroups.ToList();
+            TimeSpan NullTS = new(0, 0, 0);
+            TimeSpan MaxTS = new(23, 59, 59);
             foreach (var item in ageGroups)
             {
                 foreach (var us in db.Sportsmans.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.RandNumber))
                 {
                     us.ResultTime = times[i];
-                    us.FinishTime = us.ResultTime - us.StartTime;
+                    if (times[i] == NullTS) us.FinishTime = MaxTS;
+                    else us.FinishTime = us.ResultTime - us.StartTime;
                     i++;
                 }
                 db.SaveChanges();
@@ -228,8 +237,14 @@ namespace SportWebApplication.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("AgeGroupList");
         }
-        public IActionResult Protokol()
+        public async Task<IActionResult> Protokol()
         {
+            Competention competention;
+            using (FileStream fs = new FileStream("competetion.json", FileMode.Open))
+            {
+                competention = await JsonSerializer.DeserializeAsync<Competention>(fs);
+            }
+            ViewBag.Start = competention.Start;
             return View();
         }
 
