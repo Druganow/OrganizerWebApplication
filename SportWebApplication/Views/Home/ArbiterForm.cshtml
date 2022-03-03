@@ -2,7 +2,7 @@
 <a class="print-doc" href="javascript:(print());"> Распечатать</a>
 
 <h1 class="text-center">@Model.CompetetionName</h1>
-<h2>Стартовый протокол</h2>
+<h2>Судейский протокол</h2>
 @foreach (var item in Model.ageGroups)
 {
     var i = 1;
@@ -22,26 +22,36 @@
                     Имя
                 </th>
                 <th>
+                    Отсечки
+                </th>
+                <th>
                     Время
                 </th>
             </tr>
             @foreach (var us in Model.users.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1
-         && t.Age <= item.Yahr2)).OrderBy(t => t.StartTime))
+       && t.Age <= item.Yahr2)).OrderBy(t => t.StartTime))
             {
-                <tr>
-                    <td>
-                        @i
-                    </td>
-                    <td>
-                        @us.Number
-                    </td>
-                    <td>
-                        @us.Name
-                    </td>
-                    <td>
-                        @us.StartTime
-                    </td>
-                </tr>
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @us.Number
+            </td>
+            <td>
+                @us.Name
+            </td>
+            <td>
+
+                @for (int j = 0; j < item.Laps; j++)
+                {
+                    <div class="square"></div>
+                }
+            </td>
+            <td>
+                @us.StartTime
+            </td>
+        </tr>
                 i++;
             }
         </table>

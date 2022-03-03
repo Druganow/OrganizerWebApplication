@@ -115,6 +115,18 @@ namespace SportWebApplication.Controllers
             return View(pf);
         }
 
+        public async Task<IActionResult> ArbiterForm()
+        {
+            ProtokolForm pf = new();
+            pf.ageGroups = db.AgeGroups.ToList();
+            pf.users = db.Sportsmans.ToList();
+            using (FileStream fs = new("competetion.json", FileMode.Open))
+            {
+                pf.CompetetionName = (await JsonSerializer.DeserializeAsync<Competention>(fs)).Name;
+            }
+            return View(pf);
+        }
+
         public async Task<IActionResult> DiplomaForm()
         {
             ProtokolForm pf = new();
@@ -147,13 +159,18 @@ namespace SportWebApplication.Controllers
             {
                 competention.Start = true;
                 List<AgeGroup> ageGroups = db.AgeGroups.ToList();
+                Number[] num = db.Numbers.ToArray<Number>();
+                int i = 0;
                 foreach (var item in ageGroups)
                 {
                     TimeSpan interval = new TimeSpan(0, 0, 0);
                     foreach (var us in db.Sportsmans.Where(t => (t.Sex == item.Sex && t.Age >= item.Yahr1 && t.Age <= item.Yahr2)).OrderBy(t => t.RandNumber))
                     {
+                        if (i == num.Length) i = 0;
+                        us.Number = num[i].Num;
                         us.StartTime = interval;
                         interval += competention.Interval;
+                        i++;
                     }
                     db.SaveChanges();
                 }
@@ -214,6 +231,27 @@ namespace SportWebApplication.Controllers
         public IActionResult Protokol()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNumbers(IFormFile file)
+        {
+            if (file != null)
+            {
+                db.Numbers.RemoveRange(db.Numbers);
+                using (StreamReader reader = new StreamReader(file.OpenReadStream()))
+                {
+                    string line;
+                    while ((line = await reader.ReadLineAsync()) != null)
+                    {
+                        Number n = new();
+                        n.Num = int.Parse(line);
+                        db.Numbers.Add(n);
+                    }
+                    await db.SaveChangesAsync();
+                }
+            }
+            return RedirectToAction("Setting");
         }
 
         [HttpPost]

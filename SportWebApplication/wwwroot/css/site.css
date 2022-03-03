@@ -90,9 +90,16 @@ table {
     width: 100%;
     
 }
-trNumber {
+.trNumber {
     width: 20px;
 }
-trTime {
+.trTime {
     width: 20px;
+}
+
+.square {
+    height: 20px;
+    width: 20px;
+    border: 2px double black;
+    float: left;
 }
